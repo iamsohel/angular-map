@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angualr-map';
+  lat: number = 23.7998;
+  lng: number = 90.352;
 }
