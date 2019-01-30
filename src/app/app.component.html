@@ -1,8 +1,24 @@
-<h1>{{ title }}</h1>
+
+<div class="container">
+  <h1>Angular 2 + Google Maps polyline </h1>
+  <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+     <ng-container>
+       <agm-polyline *ngFor="let polyline of polylines;let i = index;"  [strokeColor]="polyline.color">
+          <agm-polyline-point *ngFor="let point of polyline.path" [latitude]="point.latitude" [longitude]="point.longitude">
+          </agm-polyline-point>
+      </agm-polyline>
+    </ng-container>
+  </agm-map>
+</div>
+
+
+
+
+<!-- <h1>{{ title }}</h1>
 
 <agm-map [latitude]="lat" [longitude]="lng">
   <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-</agm-map>
+</agm-map> -->
 
 <!-- 
 

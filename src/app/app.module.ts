@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule  } from '@angular/core';
+import { NgModule, ElementRef, ViewChild  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,9 +15,11 @@ import { AppComponent } from './app.component';
     BrowserModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: ''
+      apiKey: '',
+      libraries: ["places"]
     })
   ],
   providers: [],
