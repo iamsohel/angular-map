@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MapService } from './map.service';
 
 declare const google: any;
 
@@ -7,48 +8,60 @@ declare const google: any;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-   ngOnInit() {
-      this.initMap();
-   }
+export class AppComponent implements OnInit {
 
-  initMap() {
+  constructor(private mapService: MapService) { }
 
-    let marker;
-    const mirpur = {lat:23.7998, lng: 90.352};
-    const dhanmondi = {lat:23.746466, lng: 90.376015};
+  ngOnInit() {
+    this.drawMap();
+  }
 
-    let map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
-      center: {lat: 23.777176, lng: 90.399452},
-      mapTypeId: 'terrain'
-    });
+  drawMap() {
 
-    let flightPlanCoordinates = [
-      {lat: 23.7998, lng: 90.352},
-      {lat: 23.746466, lng: 90.376015},
-      {lat: 23.759739, lng: 90.392418},
-      {lat: 23.797911, lng: 90.414391},
-    ];
-    let flightPath = new google.maps.Polyline({
-      path: flightPlanCoordinates,
-      geodesic: true,
-      strokeColor: '#000000',
-      strokeOpacity: 1.0,
-      strokeWeight: 4
-    });
+    this.mapService.getMapData().subscribe(data => {
+  
+      let map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: { lat: data[0]['lat'], lng: data[0]['lng'] },
+        mapTypeId: 'terrain'
+      });
 
-    flightPath.setMap(map);
+      let mapPath = new google.maps.Polyline({
+        path: data,
+        geodesic: true,
+        strokeColor: '#000000',
+        strokeOpacity: 2.0,
+        strokeWeight: 4
+      });
+      mapPath.setMap(map);
 
-    marker = new google.maps.Marker({
-      position: mirpur,
-      map: map,
-      title: 'Mirpur-12'
-    });
-    marker = new google.maps.Marker({
-      position: dhanmondi,
-      map: map,
-      title: 'Dhanmondi'
+      data.forEach(item => {
+
+        var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading"> Time: '+item.gps_time+'</h1>'+
+        '<div id="bodyContent">'+
+        '<p><b>Speed: '+item.speed+' (KM/H)</b>, <b>Direction: '+item.direction+'</b></p>' +
+        '<p><b>Latitude: '+item.lat+'</b>, <b>Longitude: '+item.lng+'</b></p>'+
+        '</div>'+
+        '</div>';
+      
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+        let location = item;
+        let marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          //title: item.gps_time !== '0' ? item.gps_time : '',
+          //icon: 'assets/d.jpg'
+        });
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      })
     });
   }
 
