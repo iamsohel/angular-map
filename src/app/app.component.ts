@@ -77,9 +77,28 @@ export class AppComponent implements OnInit {
     });
   }
 
-  abc(){
+   
+     transition(result){
+        var deltaLat;
+        var deltaLng;
+        var i = 0;
+        deltaLat = (result[0] - position[0])/numDeltas;
+        deltaLng = (result[1] - position[1])/numDeltas;
+        this.moveMarker();
+    }
     
-  }
+     moveMarker(){
+         var i;
+        var delay = 100;
+        position[0] += deltaLat;
+        position[1] += deltaLng;
+        var latlng = new google.maps.LatLng(position[0], position[1]);
+        marker.setPosition(latlng);
+        if(i!=numDeltas){
+            i++;
+            setTimeout(this.moveMarker, delay);
+        }
+    }
 
 
 }
