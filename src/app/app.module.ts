@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapService } from './map.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { MapService } from './map.service';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
+    HttpClientModule
   ],
   providers: [MapService],
   bootstrap: [AppComponent]

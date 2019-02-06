@@ -10,7 +10,10 @@ declare const google: any;
 })
 export class AppComponent implements OnInit {
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService) {
+    this.mapService.getData()
+        .subscribe(data => console.log(data));
+   }
 
   ngOnInit() {
     this.drawMap();
@@ -56,7 +59,7 @@ export class AppComponent implements OnInit {
           position: location,
           map: map,
           //title: item.gps_time !== '0' ? item.gps_time : '',
-          //icon: 'assets/d.jpg'
+        icon: 'assets/Vehicle.png'
         });
         // marker.addListener('click', function() {
         //   infowindow.open(map, marker);
@@ -72,6 +75,10 @@ export class AppComponent implements OnInit {
 
       })
     });
+  }
+
+  abc(){
+    
   }
 
 
