@@ -11,8 +11,8 @@ declare const google: any;
 export class AppComponent implements OnInit {
 
   constructor(private mapService: MapService) {
-    this.mapService.getData()
-        .subscribe(data => console.log(data));
+    // this.mapService.getFileData()
+    //     .subscribe(data => console.log(data));
    }
 
   ngOnInit() {

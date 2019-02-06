@@ -19,7 +19,7 @@ export class MapService {
         return of(LatLngs);
     }
 
-    getData():any{
-        this.http.get('assets/vehicle_data.txt', {responseType: 'text'});
+    getFileData():any{
+        return this.http.get('assets/vehicle_data.txt', {responseType: 'text'});
     }
 }
