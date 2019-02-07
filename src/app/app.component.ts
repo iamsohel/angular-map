@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
       let map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
         center: { lat: data[0]['lat'], lng: data[0]['lng'] },
-        mapTypeId: 'terrain'
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       });
 
       let mapPath = new google.maps.Polyline({
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
           position: location,
           map: map,
           //title: item.gps_time !== '0' ? item.gps_time : '',
-        icon: 'assets/Vehicle.png'
+         icon: 'assets/car.png'
         });
         // marker.addListener('click', function() {
         //   infowindow.open(map, marker);
@@ -73,32 +73,37 @@ export class AppComponent implements OnInit {
           infowindow.close(map, marker);
         });
 
+        this.animateRoute(map);
+
       })
     });
   }
 
-   
-     transition(result){
-        var deltaLat;
-        var deltaLng;
-        var i = 0;
-        deltaLat = (result[0] - position[0])/numDeltas;
-        deltaLng = (result[1] - position[1])/numDeltas;
-        this.moveMarker();
-    }
-    
-     moveMarker(){
-         var i;
-        var delay = 100;
-        position[0] += deltaLat;
-        position[1] += deltaLng;
-        var latlng = new google.maps.LatLng(position[0], position[1]);
-        marker.setPosition(latlng);
-        if(i!=numDeltas){
-            i++;
-            setTimeout(this.moveMarker, delay);
-        }
-    }
+  animateRoute(map) {
+    let  square = {
+      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,//'M -2,-2 2,-2 2,2 -2,2 z', // 'M -2,0 0,-2 2,0 0,2 z',
+      strokeColor: '#000',
+      fillColor: '#000',
+      fillOpacity: 1,
+      scale: 5
+    };
+  
+    let line = new google.maps.Polyline({
+      path: [{lat: 24.853998, lng: 89.349743}, {lat: 24.864243, lng: 89.351716}],
+      icons: [{
+        icon: square,
+        offset: '100%'
+      }],
+      map: map
+    });
 
+    let count = 0;
+    window.setInterval(function() {
+        count = (count + 1) % 200;
+        let icons = line.get('icons');
+        icons[0].offset = (count / 2) + '%';
+        line.set('icons', icons);
+    }, 50);
+  }
 
 }
