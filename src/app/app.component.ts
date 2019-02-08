@@ -86,12 +86,16 @@ export class AppComponent implements OnInit {
     });
 
     let count = 0;
-    window.setInterval(function() {
+    let timerId = setInterval(function() {
         count = (count + 1) % 200;
         let icons = line.get('icons');
-        icons[0].offset = (count / 2) + '%';
+        const div = count/2;
+        icons[0].offset = div + '%';
         line.set('icons', icons);
-    }, 100);
+        if(div == 99.5){
+          clearInterval(timerId);
+        }
+    }, 50);
   }
 
   movement(){
