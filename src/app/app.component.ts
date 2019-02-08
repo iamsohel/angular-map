@@ -11,7 +11,7 @@ declare const google: any;
 export class AppComponent implements OnInit {
   animateData = [];
   constructor(private mapService: MapService) {
-   }
+  }
 
   ngOnInit() {
     this.drawMap();
@@ -35,41 +35,41 @@ export class AppComponent implements OnInit {
       mapPath.setMap(map);
 
       data.forEach(item => {
-        var contentString = '<div id="content">'+
-        '<div id="siteNotice">'+
-        '</div>'+
-        '<h1 id="firstHeading" class="firstHeading"> Time: '+item.gps_time+'</h1>'+
-        '<div id="bodyContent">'+
-        '<p><b>Speed: '+item.speed+' (KM/H)</b>, <b>Direction: '+item.direction+'</b></p>' +
-        '<p><b>Latitude: '+item.lat+'</b>, <b>Longitude: '+item.lng+'</b></p>'+
-        '</div>'+
-        '</div>';
-      
-      var infowindow = new google.maps.InfoWindow({
-        content: contentString
-      });
+        const contentString = '<div id="content">' +
+          '<div id="siteNotice">' +
+          '</div>' +
+          '<h1 id="firstHeading" class="firstHeading"> Time: ' + item.gps_time + '</h1>' +
+          '<div id="bodyContent">' +
+          '<p><b>Speed: ' + item.speed + ' (KM/H)</b>, <b>Direction: ' + item.direction + '</b></p>' +
+          '<p><b>Latitude: ' + item.lat + '</b>, <b>Longitude: ' + item.lng + '</b></p>' +
+          '</div>' +
+          '</div>';
 
-      let location = item;
-      let marker = new google.maps.Marker({
-        position: location,
-        map: map,
-        icon: 'assets/car.png'
-      });
-      
-      google.maps.event.addListener(marker, 'mouseover', function () {
-        infowindow.open(map, marker);
-        this.animateRoute(map);
-      });
-      
-      google.maps.event.addListener(marker, 'mouseout', function () {
-        infowindow.close(map, marker);
-      });
-      })                                
+        const infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        const location = item;
+        const marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: 'assets/car.png'
+        });
+
+        google.maps.event.addListener(marker, 'mouseover', function () {
+          infowindow.open(map, marker);
+          this.animateRoute(map);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function () {
+          infowindow.close(map, marker);
+        });
+      })
     });
   }
 
   animateRoute(map) {
-    const  square = {
+    const square = {
       path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
       strokeColor: '#000',
       fillColor: '#000',
@@ -86,30 +86,30 @@ export class AppComponent implements OnInit {
     });
 
     let count = 0;
-    let timerId = setInterval(function() {
-        count = (count + 1) % 200;
-        let icons = line.get('icons');
-        const div = count/2;
-        icons[0].offset = div + '%';
-        line.set('icons', icons);
-        if(div == 99.5){
-          clearInterval(timerId);
-        }
+    const timerId = setInterval(function () {
+      count = (count + 1) % 200;
+      const icons = line.get('icons');
+      const div = count / 2;
+      icons[0].offset = div + '%';
+      line.set('icons', icons);
+      if (div == 99.5) {
+        clearInterval(timerId);
+      }
     }, 50);
   }
 
-  movement(){
+  movement() {
     this.mapService.getMapData().subscribe(data => {
-      this.animateData = data.map(item =>  {
-         return {lat:item.lat, lng:item.lng}
+      this.animateData = data.map(item => {
+        return { lat: item.lat, lng: item.lng }
       })
-    let map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: { lat: data[0]['lat'], lng: data[0]['lng'] },
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: { lat: data[0]['lat'], lng: data[0]['lng'] },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      this.animateRoute(map);
     });
-    this.animateRoute(map);
-   });
   }
-  
+
 }

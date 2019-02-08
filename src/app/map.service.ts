@@ -11,15 +11,11 @@ import { LatLngs } from './map-lat-lng-data';
 })
 export class MapService {
 
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient) {
 
     }
 
     getMapData(): Observable<LatLng[]> {
         return of(LatLngs);
-    }
-
-    getFileData():any{
-        return this.http.get('assets/vehicle_data.txt', {responseType: 'text'});
     }
 }
