@@ -9,10 +9,8 @@ declare const google: any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
+  animateData = [];
   constructor(private mapService: MapService) {
-    // this.mapService.getFileData()
-    //     .subscribe(data => console.log(data));
    }
 
   ngOnInit() {
@@ -20,16 +18,14 @@ export class AppComponent implements OnInit {
   }
 
   drawMap() {
-
     this.mapService.getMapData().subscribe(data => {
-  
-      let map = new google.maps.Map(document.getElementById('map'), {
+      const map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
         center: { lat: data[0]['lat'], lng: data[0]['lng'] },
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
 
-      let mapPath = new google.maps.Polyline({
+      const mapPath = new google.maps.Polyline({
         path: data,
         geodesic: true,
         strokeColor: '#000000',
@@ -39,7 +35,6 @@ export class AppComponent implements OnInit {
       mapPath.setMap(map);
 
       data.forEach(item => {
-
         var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
@@ -54,42 +49,35 @@ export class AppComponent implements OnInit {
         content: contentString
       });
 
-        let location = item;
-        let marker = new google.maps.Marker({
-          position: location,
-          map: map,
-          //title: item.gps_time !== '0' ? item.gps_time : '',
-         icon: 'assets/car.png'
-        });
-        // marker.addListener('click', function() {
-        //   infowindow.open(map, marker);
-        // });
-
-        google.maps.event.addListener(marker, 'mouseover', function () {
-          infowindow.open(map, marker);
-        });
-        
-        google.maps.event.addListener(marker, 'mouseout', function () {
-          infowindow.close(map, marker);
-        });
-
+      let location = item;
+      let marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: 'assets/car.png'
+      });
+      
+      google.maps.event.addListener(marker, 'mouseover', function () {
+        infowindow.open(map, marker);
         this.animateRoute(map);
-
-      })
+      });
+      
+      google.maps.event.addListener(marker, 'mouseout', function () {
+        infowindow.close(map, marker);
+      });
+      })                                
     });
   }
 
   animateRoute(map) {
-    let  square = {
-      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,//'M -2,-2 2,-2 2,2 -2,2 z', // 'M -2,0 0,-2 2,0 0,2 z',
+    const  square = {
+      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
       strokeColor: '#000',
       fillColor: '#000',
       fillOpacity: 1,
       scale: 5
     };
-  
-    let line = new google.maps.Polyline({
-      path: [{lat: 24.853998, lng: 89.349743}, {lat: 24.864243, lng: 89.351716}],
+    const line = new google.maps.Polyline({
+      path: this.animateData,
       icons: [{
         icon: square,
         offset: '100%'
@@ -103,7 +91,21 @@ export class AppComponent implements OnInit {
         let icons = line.get('icons');
         icons[0].offset = (count / 2) + '%';
         line.set('icons', icons);
-    }, 50);
+    }, 100);
   }
 
+  movement(){
+    this.mapService.getMapData().subscribe(data => {
+      this.animateData = data.map(item =>  {
+         return {lat:item.lat, lng:item.lng}
+      })
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: { lat: data[0]['lat'], lng: data[0]['lng'] },
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    this.animateRoute(map);
+   });
+  }
+  
 }
