@@ -108,6 +108,46 @@ export class AppComponent implements OnInit {
         center: { lat: data[0]['lat'], lng: data[0]['lng'] },
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
+      const mapPath = new google.maps.Polyline({
+        path: data,
+        geodesic: true,
+        strokeColor: '#000000',
+        strokeOpacity: 2.0,
+        strokeWeight: 4
+      });
+      mapPath.setMap(map);
+
+      data.forEach(item => {
+        const contentString = '<div id="content">' +
+          '<div id="siteNotice">' +
+          '</div>' +
+          '<h1 id="firstHeading" class="firstHeading"> Time: ' + item.gps_time + '</h1>' +
+          '<div id="bodyContent">' +
+          '<p><b>Speed: ' + item.speed + ' (KM/H)</b>, <b>Direction: ' + item.direction + '</b></p>' +
+          '<p><b>Latitude: ' + item.lat + '</b>, <b>Longitude: ' + item.lng + '</b></p>' +
+          '</div>' +
+          '</div>';
+
+        const infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        const location = item;
+        const marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: 'assets/car.png'
+        });
+
+        google.maps.event.addListener(marker, 'mouseover', function () {
+          infowindow.open(map, marker);
+          this.animateRoute(map);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function () {
+          infowindow.close(map, marker);
+        });
+      })
       this.animateRoute(map);
     });
   }
