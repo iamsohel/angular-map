@@ -49,11 +49,31 @@ export class AppComponent implements OnInit {
           content: contentString
         });
 
-        const location = item;
-        const marker = new google.maps.Marker({
+        let split_direction = item.direction.split("[");
+        if (split_direction[0] === 'West') {
+          var icon_symbol = 'assets/w.png'
+        } else if (split_direction[0] === 'East') {
+          var icon_symbol = 'assets/e.png'
+        } else if (split_direction[0] === 'North') {
+          var icon_symbol = 'assets/n.png'
+        } else if (split_direction[0] === 'Northeast') {
+          var icon_symbol = 'assets/ne.png'
+        } else if (split_direction[0] === 'Northwest') {
+          var icon_symbol = 'assets/nw.png'
+        } else if (split_direction[0] === 'South') {
+          var icon_symbol = 'assets/s.png'
+        } else if (split_direction[0] === 'Southwest') {
+          var icon_symbol = 'assets/sw.png'
+        } else if (split_direction[0] === 'Southeast') {
+          var icon_symbol = 'assets/se.png'
+        } else {
+          var icon_symbol = 'assets/car.png'
+        }
+        let location = item;
+        let marker = new google.maps.Marker({
           position: location,
           map: map,
-          icon: 'assets/car.png'
+          icon: icon_symbol
         });
 
         google.maps.event.addListener(marker, 'mouseover', function () {
@@ -132,11 +152,31 @@ export class AppComponent implements OnInit {
           content: contentString
         });
 
-        const location = item;
-        const marker = new google.maps.Marker({
+        let split_direction = item.direction.split("[");
+        if (split_direction[0] === 'West') {
+          var icon_symbol = 'assets/w.png'
+        } else if (split_direction[0] === 'East') {
+          var icon_symbol = 'assets/e.png'
+        } else if (split_direction[0] === 'North') {
+          var icon_symbol = 'assets/n.png'
+        } else if (split_direction[0] === 'Northeast') {
+          var icon_symbol = 'assets/ne.png'
+        } else if (split_direction[0] === 'Northwest') {
+          var icon_symbol = 'assets/nw.png'
+        } else if (split_direction[0] === 'South') {
+          var icon_symbol = 'assets/s.png'
+        } else if (split_direction[0] === 'Southwest') {
+          var icon_symbol = 'assets/sw.png'
+        } else if (split_direction[0] === 'Southeast') {
+          var icon_symbol = 'assets/se.png'
+        } else {
+          var icon_symbol = 'assets/car.png'
+        }
+        let location = item;
+        let marker = new google.maps.Marker({
           position: location,
           map: map,
-          icon: 'assets/car.png'
+          icon: icon_symbol
         });
 
         google.maps.event.addListener(marker, 'mouseover', function () {
