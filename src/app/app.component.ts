@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
         if(div == 99.5){
           clearInterval(timerId);
         }
-    }, 50);
+    }, 100);
   }
 
   movement(){
